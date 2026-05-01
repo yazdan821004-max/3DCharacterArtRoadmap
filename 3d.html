@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Character Art Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b10;
+    --bg2: #0d1118;
+    --bg3: #111722;
+    --panel: #13192580;
+    --border: #ffffff10;
+    --border2: #ffffff18;
+    --accent: #e8722a;
+    --accent2: #f4a261;
+    --accent3: #2a9d8f;
+    --accent4: #c77dff;
+    --accent5: #4cc9f0;
+    --gold: #ffd166;
+    --text: #d4dce8;
+    --text-dim: #7a8899;
+    --text-bright: #eef2f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 60px 72px;
+    border-bottom: 1px solid var(--border2);
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 40%, #e8722a0f 0%, transparent 70%),
+      radial-gradient(ellipse 50% 50% at 20% 80%, #2a9d8f08 0%, transparent 60%),
+      linear-gradient(170deg, #0d1520 0%, #080b10 50%, #0a0d15 100%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
+
+  .hero-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 130px);
+    line-height: 0.9;
+    color: var(--text-bright);
+    position: relative;
+    letter-spacing: 2px;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-sub {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--text-dim);
+    margin-top: 20px;
+    max-width: 500px;
+    position: relative;
+  }
+
+  .hero-meta {
+    position: absolute;
+    top: 60px;
+    right: 72px;
+    text-align: right;
+  }
+  .meta-spacer { height: 16px; }
+
+  .hero-meta .label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+  .hero-meta .value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--accent2);
+    letter-spacing: 1px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border2);
+    position: relative;
+  }
+
+  .stat .n {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--text-bright);
+    line-height: 1;
+  }
+  .stat .n em {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .stat .l {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Main Content */
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 72px 80px;
+  }
+
+  /* Section Dividers */
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 80px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .stage-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    line-height: 1;
+    color: var(--border2);
+    min-width: 80px;
+    letter-spacing: 1px;
+  }
+
+  .stage-info { flex: 1; }
+
+  .stage-badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .stage-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    line-height: 1;
+    color: var(--text-bright);
+    letter-spacing: 1px;
+  }
+
+  .stage-duration {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+
+  .stage-summary {
+    font-family: 'Crimson Pro', serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    max-width: 650px;
+    margin-top: 12px;
+    font-style: italic;
+  }
+
+  /* Grid layout for stage content */
+  .stage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .stage-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .card.courses::before { background: var(--accent); }
+  .card.books::before { background: var(--accent3); }
+  .card.exercises::before { background: var(--accent4); }
+  .card.milestones::before { background: var(--gold); }
+  .card.additions::before { background: var(--accent5); }
+  .card.full::before { background: var(--accent); }
+
+  .card-title {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card.courses .card-title { color: var(--accent); }
+  .card.books .card-title { color: var(--accent3); }
+  .card.exercises .card-title { color: var(--accent4); }
+  .card.milestones .card-title { color: var(--gold); }
+  .card.additions .card-title { color: var(--accent5); }
+  .card.full .card-title { color: var(--accent2); }
+
+  /* Course items */
+  .course-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .course-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .course-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-bright);
+    line-height: 1.3;
+  }
+
+  .course-author {
+    font-size: 12px;
+    color: var(--accent2);
+    margin-top: 2px;
+  }
+
+  .course-tag {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .course-new {
+    display: inline-block;
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    background: var(--accent5);
+    color: var(--bg);
+    border-radius: 2px;
+    margin-left: 8px;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+
+  /* Exercise items */
+  .exercise-item {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .exercise-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .ex-week {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    color: var(--accent4);
+    min-width: 70px;
+    padding-top: 1px;
+    letter-spacing: 1px;
+  }
+
+  .ex-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* Milestone items */
+  .milestone-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .milestone-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .ms-check {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ms-check svg { width: 10px; height: 10px; stroke: var(--gold); fill: none; opacity: 0.3; }
+
+  .ms-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* Full-width card */
+  .card.full { margin-bottom: 20px; }
+
+  /* Addition items */
+  .addition-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .addition-item:last-child { border-bottom: none; }
+  .add-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent5);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+  .add-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .add-text strong { color: var(--accent5); font-weight: 600; }
+
+  /* Stage color themes */
+  .s1 .stage-badge { background: var(--accent)22; color: var(--accent); border: 1px solid var(--accent)44; }
+  .s15 .stage-badge { background: #e8722a22; color: #f4a261; border: 1px solid #f4a26144; }
+  .s2 .stage-badge { background: var(--accent3)22; color: var(--accent3); border: 1px solid var(--accent3)44; }
+  .s3 .stage-badge { background: var(--accent4)22; color: var(--accent4); border: 1px solid var(--accent4)44; }
+  .s4 .stage-badge { background: var(--gold)22; color: var(--gold); border: 1px solid var(--gold)44; }
+  .s5 .stage-badge { background: var(--accent5)22; color: var(--accent5); border: 1px solid var(--accent5)44; }
+
+  .s1 .stage-number { color: var(--accent)15; }
+  .s15 .stage-number { color: #f4a26115; }
+  .s2 .stage-number { color: var(--accent3)20; }
+  .s3 .stage-number { color: var(--accent4)20; }
+  .s4 .stage-number { color: var(--gold)20; }
+  .s5 .stage-number { color: var(--accent5)20; }
+
+  /* Timeline bar */
+  .timeline-bar {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 40px 52px;
+    margin: 60px 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .timeline-bar-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--text-bright);
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+  }
+
+  .timeline-track {
+    position: relative;
+    height: 60px;
+    margin-bottom: 12px;
+  }
+
+  .timeline-segments {
+    display: flex;
+    height: 40px;
+    border-radius: 4px;
+    overflow: hidden;
+    gap: 2px;
+  }
+
+  .tl-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--bg);
+    cursor: default;
+    transition: opacity 0.2s;
+  }
+  .tl-seg:hover { opacity: 0.85; }
+
+  .tl-labels {
+    display: flex;
+    margin-top: 10px;
+    gap: 2px;
+  }
+
+  .tl-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  .total-time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--text-bright);
+    letter-spacing: 2px;
+    margin-top: 24px;
+  }
+  .total-time em { color: var(--accent); font-style: normal; }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border2);
+    padding: 32px 72px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-quote {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text-dim);
+    max-width: 500px;
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-align: right;
+  }
+  .footer-brand small {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Book items */
+  .book-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .book-item:last-child { border-bottom: none; }
+  .book-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--accent3);
+    line-height: 1;
+    min-width: 24px;
+  }
+  .book-name { font-size: 14px; font-weight: 600; color: var(--text-bright); line-height: 1.3; }
+  .book-author { font-size: 12px; color: var(--text-dim); }
+
+  /* Warning tag */
+  .warn-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    background: #ffd16615;
+    border: 1px solid #ffd16630;
+    color: var(--gold);
+    border-radius: 2px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  /* Naughty Dog highlight box */
+  .nd-box {
+    background: linear-gradient(135deg, #ffd16608, var(--bg3));
+    border: 1px solid var(--gold)30;
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .nd-icon {
+    font-size: 28px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .nd-content {}
+  .nd-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .nd-text {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-top: 4px;
+  }
+
+  /* ── Reusable grid helpers (replacing inline styles) ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
+  .grid-2-40 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 32px; }
+  .tl-labels-grid {
+    display: grid;
+    grid-template-columns: 14.3% 19% 21.4% 19% 16.7% 9.6%;
+    gap: 2px;
+    margin-top: 8px;
+  }
+  .tl-label-cell { font-size: 10px; color: var(--text-dim); padding: 0 2px; }
+
+  /* ── Tablet: ≤ 900px ── */
+  @media (max-width: 900px) {
+    .hero {
+      padding: 36px 36px 40px;
+      min-height: auto;
+      justify-content: flex-start;
+    }
+    .hero-meta {
+      position: static;
+      text-align: left;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 32px;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border2);
+    }
+    .meta-spacer { display: none; }
+    .hero-meta .label { font-size: 9px; display: block; }
+    .hero-meta .value { font-size: 18px; display: block; margin-bottom: 8px; }
+    .hero-tag { margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(52px, 12vw, 90px); }
+    .hero-sub { font-size: 17px; }
+    .hero-stats { gap: 28px; flex-wrap: wrap; margin-top: 28px; padding-top: 24px; }
+    .stat .n { font-size: 34px; }
+
+    .content { padding: 0 36px 60px; }
+
+    .section-header { gap: 16px; padding: 60px 0 32px; }
+    .stage-number { font-size: 56px; min-width: 60px; }
+    .stage-title { font-size: 32px; }
+
+    .stage-grid { grid-template-columns: 1fr; }
+    .stage-grid-3 { grid-template-columns: 1fr; }
+
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-2-40 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+
+    .tl-labels-grid { display: none; }
+    .tl-seg { font-size: 9px; }
+
+    .timeline-bar { padding: 28px 28px; }
+    .total-time { font-size: 42px; }
+
+    .footer { flex-direction: column; gap: 20px; padding: 28px 36px; text-align: center; }
+    .footer-brand { text-align: center; }
+  }
+
+  /* ── Mobile: ≤ 600px ── */
+  @media (max-width: 600px) {
+    .hero {
+      padding: 24px 20px 32px;
+      min-height: auto;
+      justify-content: flex-start;
+    }
+    .hero-meta {
+      position: static;
+      text-align: left;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 24px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border2);
+    }
+    .meta-spacer { display: none; }
+    .hero-meta .label { font-size: 9px; letter-spacing: 2px; display: block; }
+    .hero-meta .value { font-size: 16px; display: block; margin-bottom: 6px; line-height: 1.2; }
+
+    .hero-tag { font-size: 9px; letter-spacing: 3px; margin-bottom: 14px; }
+    .hero h1 { font-size: clamp(44px, 13vw, 68px); }
+    .hero-sub { font-size: 15px; max-width: 100%; margin-top: 14px; }
+    .hero-stats {
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      padding-top: 18px;
+    }
+    .stat .n { font-size: 28px; }
+    .stat .l { font-size: 9px; }
+
+    .content { padding: 0 20px 48px; }
+
+    .section-header {
+      flex-direction: column;
+      gap: 4px;
+      padding: 40px 0 20px;
+      align-items: flex-start;
+    }
+    .stage-number { font-size: 40px; min-width: auto; line-height: 1; margin-bottom: -4px; }
+    .stage-title { font-size: 24px; }
+    .stage-summary { font-size: 14px; }
+    .stage-duration { font-size: 11px; }
+
+    .card { padding: 16px 16px; }
+    .card-title { font-size: 8px; letter-spacing: 2px; margin-bottom: 12px; }
+
+    .course-name { font-size: 13px; }
+    .course-tag { font-size: 11px; }
+    .book-name { font-size: 13px; }
+
+    .ex-week { font-size: 11px; min-width: 54px; }
+    .ex-text { font-size: 12px; }
+    .ms-text { font-size: 12px; }
+
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-2-40 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+
+    .nd-box { flex-direction: column; gap: 10px; padding: 14px 16px; }
+    .nd-icon { font-size: 22px; }
+    .nd-title { font-size: 15px; }
+    .nd-text { font-size: 11px; }
+
+    .timeline-bar { padding: 18px 16px; }
+    .timeline-bar-title { font-size: 18px; margin-bottom: 16px; }
+    .tl-seg { font-size: 8px; }
+    .total-time { font-size: 30px; margin-top: 14px; }
+
+    .footer { flex-direction: column; padding: 20px 20px; gap: 14px; text-align: center; }
+    .footer-quote { font-size: 13px; }
+    .footer-brand { text-align: center; }
+  }
+
+  @media print {
+    body { background: white; }
+    .hero-bg, .hero-grid, body::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-meta">
+    <div class="label">Target Studio</div>
+    <div class="value">NAUGHTY DOG</div>
+    <div class="meta-spacer"></div>
+    <div class="label">Total Roadmap</div>
+    <div class="value">21–28 Months</div>
+    <div class="meta-spacer"></div>
+    <div class="label">Discipline</div>
+    <div class="value">Realistic<br>Character Art</div>
+  </div>
+  <div class="hero-tag">YOUR PERSONALIZED ROADMAP</div>
+  <h1>3D CHARACTER<br><span>ART MASTERY</span></h1>
+  <p class="hero-sub">From zero to Naughty Dog–ready. Five stages of deliberate, structured growth.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="n">5<em>+</em></div><div class="l">Stages</div></div>
+    <div class="stat"><div class="n">18<em>+</em></div><div class="l">Courses</div></div>
+    <div class="stat"><div class="n">3<em>+</em></div><div class="l">Reference Books</div></div>
+    <div class="stat"><div class="n">30<em>+</em></div><div class="l">Practice Exercises</div></div>
+  </div>
+</section>
+
+<div class="content">
+
+  <!-- ====== STAGE 1 ====== -->
+  <div class="s1">
+    <div class="section-header">
+      <div class="stage-number">01</div>
+      <div class="stage-info">
+        <span class="stage-badge">FOUNDATION</span>
+        <h2 class="stage-title">Maya, ZBrush & Anatomy Theory</h2>
+        <div class="stage-duration">⏱ Estimated: 3–4 Months</div>
+        <p class="stage-summary">Build your software literacy in Maya and ZBrush simultaneously while absorbing the theory of human anatomy through Zarins' books. No sculpting details yet — just building the mental model and the interface confidence.</p>
+      </div>
+    </div>
+
+    <div class="stage-grid">
+      <div class="card courses">
+        <div class="card-title">▲ Courses</div>
+        <div class="course-item">
+          <div class="course-name">Introduction to Maya 2023 — Volume 1</div>
+          <div class="course-author">Eric Keller · Gnomon Workshop</div>
+          <div class="course-tag">12 Chapters · Interface, nodes, navigation</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Introduction to Maya 2023 — Volume 2</div>
+          <div class="course-author">Eric Keller · Gnomon Workshop</div>
+          <div class="course-tag">14 Chapters · Polygon modeling, UV toolkit, animation</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Introduction to Maya 2023 — Volume 3</div>
+          <div class="course-author">Eric Keller · Gnomon Workshop</div>
+          <div class="course-tag">Shading, lighting, Arnold, export to Unreal Engine 5</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Ultimate ZBrush Guide</div>
+          <div class="course-author">Pablo Munoz Gomez</div>
+          <div class="course-tag">Reference guide · Core ZBrush concepts & tools</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">ZBrush for Beginners — Full Series <span class="course-new">ADDED</span></div>
+          <div class="course-author">Michael Pavlovich · YouTube (FREE)</div>
+          <div class="course-tag">Hands-on interface drills · Free bridge to Stage 1.5</div>
+        </div>
+      </div>
+      <div class="card books">
+        <div class="card-title">◆ Reference Books (Use Throughout All Stages)</div>
+        <div class="book-item"><div class="book-num">1</div><div><div class="book-name">Anatomy for Sculptors</div><div class="book-author">Uldis Zarins</div></div></div>
+        <div class="book-item"><div class="book-num">2</div><div><div class="book-name">Anatomy of Facial Expression</div><div class="book-author">Uldis Zarins</div></div></div>
+        <div class="book-item"><div class="book-num">3</div><div><div class="book-name">Form of Head and Neck</div><div class="book-author">Uldis Zarins</div></div></div>
+        <div style="padding-top:16px; border-top: 1px solid var(--border); margin-top:4px;">
+          <div class="warn-tag">⚡ Pro Tip</div>
+          <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">These three books are not consumed once — they are your reference library for the entire roadmap. Return to them constantly. Keep them open while sculpting.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage-grid">
+      <div class="card exercises">
+        <div class="card-title">◈ Practice Exercises — When & What</div>
+        <div class="exercise-item"><div class="ex-week">Wk 1–2</div><div class="ex-text">Daily Maya interface drills. Model 5 simple hard-surface props from reference photos (mug, box, chair, lamp, tool).</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 3–4</div><div class="ex-text">UV unwrap your 5 props in Maya. Practice clean UV layouts — this is muscle memory you'll use forever.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 5–6</div><div class="ex-text">First ZBrush sessions. Follow Pavlovich's YouTube series. Sculpt 10 simple organic forms (rocks, bark, cloth folds).</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 7–10</div><div class="ex-text">Copy anatomy plates from Zarins — draw/trace them. Do 2–3 pages per session. Do this with pencil and paper.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 11–16</div><div class="ex-text">Sculpt a basic human mannequin in ZBrush from a sphere — proportions only, no details. Repeat 3 times until proportions feel natural.</div></div>
+      </div>
+      <div class="card milestones">
+        <div class="card-title">✦ Stage 1 Milestones — Check Before Moving On</div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can navigate Maya comfortably and model clean hard-surface props</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can UV unwrap a mesh without major distortion</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can perform core ZBrush operations: Dynamesh, masking, subtools, layers, transpose</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can name and locate the major muscle groups of the body from memory</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">First ZBrush mannequin figure completed with believable proportions</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== STAGE 1.5 ====== -->
+  <div class="s15">
+    <div class="section-header">
+      <div class="stage-number">1.5</div>
+      <div class="stage-info">
+        <span class="stage-badge">ANATOMY IN ZBRUSH</span>
+        <h2 class="stage-title">Sculpting the Human Form</h2>
+        <div class="stage-duration">⏱ Estimated: 4–5 Months</div>
+        <p class="stage-summary">This is where theory meets clay. You will apply everything you've read in Zarins' books into actual ZBrush sculpts. Do not rush this stage. It is the foundation your entire career will stand on.</p>
+      </div>
+    </div>
+
+    <div class="stage-grid">
+      <div class="card courses">
+        <div class="card-title">▲ Courses</div>
+        <div class="course-item">
+          <div class="course-name">Artistic Anatomy</div>
+          <div class="course-author">Dan Crossland</div>
+          <div class="course-tag">ZBrush anatomy · Structured muscle-by-muscle approach</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Male Anatomy & Female Anatomy</div>
+          <div class="course-author">Raf Grassetti · Gumroad</div>
+          <div class="course-tag">5+ hrs male · Blocking → secondary → texturing · Separate female extension</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Character Facial Sculpting</div>
+          <div class="course-author">CGMA</div>
+          <div class="course-tag">Head planes · Facial anatomy · Expressions in ZBrush</div>
+        </div>
+      </div>
+      <div class="card exercises">
+        <div class="card-title">◈ Practice Exercises — When & What</div>
+        <div class="exercise-item"><div class="ex-week">Wk 1–4</div><div class="ex-text">Sculpt an écorché figure (muscle by muscle, from skeleton out). Use Zarins Book 1 as your guide. Don't rush — spend 1 week per body region.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 5–8</div><div class="ex-text">Male torso study — 3 full passes: block, secondary forms, surface detail. Do not move on until each pass feels solved.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 9–12</div><div class="ex-text">Female anatomy study using the same 3-pass method. Pay attention to differences in fat distribution and pelvis width.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 13–16</div><div class="ex-text">Sculpt 5 different head studies from photo reference. Each one should have a different age, ethnicity, and expression.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 17–20</div><div class="ex-text">Full-body male figure with detailed face, hands, and feet. This is your first full anatomy character. No costume.</div></div>
+      </div>
+    </div>
+
+    <div class="card milestones" style="margin-bottom:20px;">
+      <div class="card-title">✦ Stage 1.5 Milestones</div>
+      <div class="grid-2">
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can sculpt a full male anatomy figure with correct muscle landmarks</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can sculpt a believable female form with correct proportions</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Understands head planes and can sculpt secondary facial anatomy</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Has a personal study library of 10+ ZBrush anatomy sculpts</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">First full-body anatomy figure complete and presentable</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can name any muscle from reference while sculpting it</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== STAGE 2 ====== -->
+  <div class="s2">
+    <div class="section-header">
+      <div class="stage-number">02</div>
+      <div class="stage-info">
+        <span class="stage-badge">CHARACTER PIPELINE</span>
+        <h2 class="stage-title">Full Character Creation</h2>
+        <div class="stage-duration">⏱ Estimated: 5–6 Months</div>
+        <p class="stage-summary">Now you sculpt with purpose. You will learn the full pipeline: high-poly sculpt → retopology → UVs → baking → first portfolio piece. The Ackeem Durrant course alone is 47+ hours — budget your time accordingly.</p>
+      </div>
+    </div>
+
+    <div class="stage-grid">
+      <div class="card courses">
+        <div class="card-title">▲ Courses</div>
+        <div class="course-item">
+          <div class="course-name">Creating a Character Bust</div>
+          <div class="course-author">Gnomon Workshop</div>
+          <div class="course-tag">High-poly character bust · Sculpting, detailing, render</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Character Creation for Games</div>
+          <div class="course-author">Ackeem Durrant · Vertex School</div>
+          <div class="course-tag">47h 18m · Full AAA game character pipeline · PBR workflow</div>
+        </div>
+      </div>
+      <div class="card additions">
+        <div class="card-title">⊕ Added to Your Plan</div>
+        <div class="addition-item"><div class="add-dot"></div><div class="add-text"><strong>Retopology deep practice:</strong> After each major sculpt, do a full manual retopology pass in Maya. ZRemesher alone won't get you hired.</div></div>
+        <div class="addition-item"><div class="add-dot"></div><div class="add-text"><strong>Marmoset Toolbag:</strong> Learn basic setup for baking and final portfolio renders. This is how AAA artists present their work on ArtStation.</div></div>
+        <div class="addition-item"><div class="add-dot"></div><div class="add-text"><strong>UV Mastery:</strong> Spend a dedicated week practicing UDIM UV workflows — essential for realistic characters.</div></div>
+        <div class="addition-item"><div class="add-dot"></div><div class="add-text"><strong>First ArtStation post:</strong> Post your character bust publicly before this stage ends. Feedback is the fastest path to growth.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-grid">
+      <div class="card exercises">
+        <div class="card-title">◈ Practice Exercises</div>
+        <div class="exercise-item"><div class="ex-week">Wk 1–4</div><div class="ex-text">Create a stylized character bust from a concept art you love. Focus on translating 2D to 3D — proportions, silhouette, personality.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 5–8</div><div class="ex-text">Retopology bootcamp: take 3 different high-poly meshes and do clean hand-retopo. Target game-ready poly counts.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 9–12</div><div class="ex-text">Follow the full Ackeem Durrant course with a character of your own choosing (not the instructor's concept).</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 13–16</div><div class="ex-text">UV unwrap & bake your Ackeem-style character. Set up your first Marmoset scene with proper lighting and materials.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 17–24</div><div class="ex-text">Personal portfolio character — fully independent. Concept selection, sculpt, retopo, UVs, bake, render. This goes on ArtStation.</div></div>
+      </div>
+      <div class="card milestones">
+        <div class="card-title">✦ Stage 2 Milestones</div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">First portfolio-quality character bust published on ArtStation</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Full pipeline: high poly → retopo → UV → bake → presentation</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can hit game-ready poly count targets without losing visual quality</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Confident with UDIM UV workflows and Marmoset Toolbag</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">2–3 ArtStation posts with process breakdowns written</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== STAGE 3 ====== -->
+  <div class="s3">
+    <div class="section-header">
+      <div class="stage-number">03</div>
+      <div class="stage-info">
+        <span class="stage-badge">EXPANDING TOOLKIT</span>
+        <h2 class="stage-title">Texture, Cloth & Hair</h2>
+        <div class="stage-duration">⏱ Estimated: 4–5 Months</div>
+        <p class="stage-summary">A great sculpt without great textures, clothing, and hair is an incomplete character. This stage transforms your characters from clay to life. These are the skills that separate intermediate from advanced character artists.</p>
+      </div>
+    </div>
+
+    <div class="stage-grid-3">
+      <div class="card courses">
+        <div class="card-title">▲ Courses</div>
+        <div class="course-item">
+          <div class="course-name">Character Texturing for Games in Substance</div>
+          <div class="course-author">Saurabh Jethani</div>
+          <div class="course-tag">PBR texturing · Skin, fabric, metal workflows</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Intro to Marvelous Designer</div>
+          <div class="course-author">Erika Lochs</div>
+          <div class="course-tag">Cloth simulation · Patterns, seams, physics</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Creating Realistic Fabric & Clothing for Games</div>
+          <div class="course-author">Erika Lochs</div>
+          <div class="course-tag">Advanced cloth → ZBrush detailing → game pipeline</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Character Hair Creation</div>
+          <div class="course-author">John Lithvall</div>
+          <div class="course-tag">Hair cards, fibermesh, grooming for game characters</div>
+        </div>
+      </div>
+      <div class="card exercises">
+        <div class="card-title">◈ Practice Exercises</div>
+        <div class="exercise-item"><div class="ex-week">Wk 1–4</div><div class="ex-text">Texture 3 different characters: one skin-heavy, one armor/metal, one fabric-heavy. Post each to ArtStation.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 5–7</div><div class="ex-text">Create 5 different clothing items in Marvelous Designer (t-shirt, jacket, pants, dress, cape).</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 8–11</div><div class="ex-text">Create a full outfit in MD → export to ZBrush → add detail sculpting → bake → texture in Substance.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 12–14</div><div class="ex-text">Create 3 different hair styles (short/straight, long/curly, styled) using the Lithvall workflow.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 15–20</div><div class="ex-text">Complete fully dressed, textured, and hair-groomed character. Your best work yet. Portfolio hero.</div></div>
+      </div>
+      <div class="card milestones">
+        <div class="card-title">✦ Stage 3 Milestones</div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can texture a full character in Substance Painter</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can design and simulate clothing in Marvelous Designer</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can create believable hair systems for game characters</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Has one complete character with costume, texture, and hair published</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">4–5 ArtStation posts total — portfolio starts to look real</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== STAGE 4 ====== -->
+  <div class="s4">
+    <div class="section-header">
+      <div class="stage-number">04</div>
+      <div class="stage-info">
+        <span class="stage-badge">LIKENESS & REALISM</span>
+        <h2 class="stage-title">Sculpting Real People</h2>
+        <div class="stage-duration">⏱ Estimated: 4–6 Months</div>
+        <p class="stage-summary">Likeness sculpting is the hardest and most coveted skill in realistic character art. This stage will define your specialization and is the clearest signal to studios like Naughty Dog that you're ready.</p>
+      </div>
+    </div>
+
+    <div class="nd-box">
+      <div class="nd-icon">🎮</div>
+      <div class="nd-content">
+        <div class="nd-title">Naughty Dog Direct Connection</div>
+        <div class="nd-text">Frank Tzeng is a Lead Character Artist at Naughty Dog with credits on Uncharted 4, The Last of Us Remaster, Killzone: Shadow Fall, and more. Studying his exact workflow is the closest you can get to learning how your dream studio works before you're inside it.</div>
+      </div>
+    </div>
+
+    <div class="stage-grid">
+      <div class="card courses">
+        <div class="card-title">▲ Courses</div>
+        <div class="course-item">
+          <div class="course-name">Likeness Sculpting</div>
+          <div class="course-author">Frank Tzeng · Gumroad</div>
+          <div class="course-tag">16 hrs · Shape sculpting, secondary anatomy, pores, fibermesh hair</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Creating Realistic Fan Art Character</div>
+          <div class="course-author">Frank Tzeng · Gumroad</div>
+          <div class="course-tag">19+ hrs · Full character sculpt from sphere, polypaint, KeyShot render</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">YouTube Channel — Ongoing <span class="course-new">FREE</span></div>
+          <div class="course-author">Kris Costa</div>
+          <div class="course-tag">Hyper-realistic sculpting · Watch throughout this entire stage</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">Skin Detailing & Scanned Textures <span class="course-new">ADDED</span></div>
+          <div class="course-author">Ian Spriggs / Texturing.xyz resources</div>
+          <div class="course-tag">Hyper-realism skin workflow · Pore scanning & application</div>
+        </div>
+      </div>
+      <div class="card exercises">
+        <div class="card-title">◈ Practice Exercises</div>
+        <div class="exercise-item"><div class="ex-week">Wk 1–4</div><div class="ex-text">5 celebrity likeness studies from 3/4-view photo reference. No costume. Just the head. Each one a different face shape.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 5–8</div><div class="ex-text">Full likeness sculpt with wrinkles, pores, eyebrows, and fibermesh hair. Follow the Frank Tzeng course exactly, then do a second one independently.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 9–12</div><div class="ex-text">Naughty Dog fan art: sculpt Joel, Ellie, or another character with accuracy. Study the original model as reference.</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 13–20</div><div class="ex-text">HERO PIECE: Original realistic character. Full pipeline. Full textures, hair, outfit. This is your best work and your main portfolio centerpiece.</div></div>
+        <div class="exercise-item"><div class="ex-week">Ongoing</div><div class="ex-text">Kris Costa weekly study sessions. Treat his channel like a live master class running in parallel.</div></div>
+      </div>
+    </div>
+
+    <div class="card milestones" style="margin-bottom:20px;">
+      <div class="card-title">✦ Stage 4 Milestones</div>
+      <div class="grid-2">
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">3+ likeness sculpts in portfolio — people recognize who it is</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">One Naughty Dog–style fan art character published</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Hero piece completed — full pipeline, full realism</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can sculpt believable skin pores and micro-detail</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">8–10 strong ArtStation posts total</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Portfolio consistently gets positive feedback from industry artists</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== STAGE 5 — NEW ====== -->
+  <div class="s5">
+    <div class="section-header">
+      <div class="stage-number">05</div>
+      <div class="stage-info">
+        <span class="stage-badge">NEW · PORTFOLIO & INDUSTRY</span>
+        <h2 class="stage-title">Get the Job</h2>
+        <div class="stage-duration">⏱ Estimated: 2–3 Months</div>
+        <p class="stage-summary">This stage didn't exist in your original plan — and it's the one that converts skill into employment. No amount of skill matters if your portfolio isn't curated, presented, and in front of the right people.</p>
+      </div>
+    </div>
+
+    <div class="stage-grid">
+      <div class="card full" style="margin-bottom:0;">
+        <div class="card-title">▲ Actions</div>
+        <div class="grid-2-40">
+          <div class="addition-item"><div class="add-dot" style="background:var(--accent2)"></div><div class="add-text"><strong>Curate ruthlessly:</strong> Select only your 5–8 absolute best pieces. Remove anything you'd be embarrassed to show at an interview.</div></div>
+          <div class="addition-item"><div class="add-dot" style="background:var(--accent2)"></div><div class="add-text"><strong>Write process posts:</strong> For each piece, write a full ArtStation breakdown with wireframes, textures, and process images.</div></div>
+          <div class="addition-item"><div class="add-dot" style="background:var(--accent2)"></div><div class="add-text"><strong>Study the job listing:</strong> Read Naughty Dog and similar studios' character artist job postings. Make sure every requirement is in your portfolio.</div></div>
+          <div class="addition-item"><div class="add-dot" style="background:var(--accent2)"></div><div class="add-text"><strong>Network actively:</strong> Follow and interact with character artists on ArtStation, Twitter/X, and LinkedIn. Be a real person in the community.</div></div>
+          <div class="addition-item"><div class="add-dot" style="background:var(--accent2)"></div><div class="add-text"><strong>Apply wide, aim high:</strong> Apply to junior roles at multiple studios. A junior role at any AAA studio is the path to Naughty Dog.</div></div>
+          <div class="addition-item"><div class="add-dot" style="background:var(--accent2)"></div><div class="add-text"><strong>Never stop learning:</strong> Even while applying, do one new study per week to keep your skills sharp and show recent activity.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card milestones" style="margin-top:20px; margin-bottom:0;">
+      <div class="card-title">✦ Final Milestones — You Are Ready</div>
+      <div class="grid-3">
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">ArtStation portfolio is curated and professional</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Every major AAA pipeline skill is represented</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Can complete a full character independently from brief to render</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Industry artists have given positive feedback on your work</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">Applications submitted to 10+ studios</div></div>
+        <div class="milestone-item"><div class="ms-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></div><div class="ms-text">First interview or art test received</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-bar">
+    <div class="timeline-bar-title">FULL ROADMAP TIMELINE</div>
+    <div class="timeline-track">
+      <div class="timeline-segments">
+        <div class="tl-seg" style="width:14.3%; background:var(--accent);">S1</div>
+        <div class="tl-seg" style="width:19%; background:#e07c40;">S1.5</div>
+        <div class="tl-seg" style="width:21.4%; background:var(--accent3);">S2</div>
+        <div class="tl-seg" style="width:19%; background:var(--accent4);">S3</div>
+        <div class="tl-seg" style="width:16.7%; background:var(--gold); color:#111;">S4</div>
+        <div class="tl-seg" style="width:9.5%; background:var(--accent5); color:#111;">S5</div>
+      </div>
+    </div>
+    <div class="tl-labels-grid">
+      <div class="tl-label-cell">Stage 1<br><span style="color:var(--accent);">3–4 mo</span></div>
+      <div class="tl-label-cell">Stage 1.5<br><span style="color:#e07c40;">4–5 mo</span></div>
+      <div class="tl-label-cell">Stage 2<br><span style="color:var(--accent3);">5–6 mo</span></div>
+      <div class="tl-label-cell">Stage 3<br><span style="color:var(--accent4);">4–5 mo</span></div>
+      <div class="tl-label-cell">Stage 4<br><span style="color:var(--gold);">4–6 mo</span></div>
+      <div class="tl-label-cell">Stage 5<br><span style="color:var(--accent5);">2–3 mo</span></div>
+    </div>
+    <div class="total-time"><em>21</em>–<em>28</em> MONTHS TOTAL</div>
+    <div style="font-size:13px; color:var(--text-dim); margin-top:8px; font-style:italic; font-family:'Crimson Pro',serif;">This assumes consistent effort of 2–3 hours per day. Results may arrive faster or slower — the milestones tell you when to advance, not the calendar.</div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-quote">"Discipline is the bridge between goals and accomplishment. Every great Naughty Dog character started with someone who showed up every single day."</div>
+  <div class="footer-brand">YOUR ROADMAP<small>3D Character Art Mastery · 2025–2027</small></div>
+</footer>
+
+</body>
+</html>
