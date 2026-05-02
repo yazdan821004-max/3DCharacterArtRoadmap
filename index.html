@@ -606,6 +606,595 @@
   }
   .tl-label-cell { font-size: 10px; color: var(--text-dim); padding: 0 2px; }
 
+  /* ── Course click affordance + hover effect ── */
+  .course-item[data-course] {
+    cursor: pointer;
+    margin: 0 -12px;
+    padding: 12px 12px;
+    border-radius: 4px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.25s ease, transform 0.25s ease, padding 0.25s ease;
+    position: relative;
+  }
+  .course-item[data-course]:last-child { border-bottom: none; }
+  .course-item[data-course]::after {
+    content: '→';
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%) translateX(-6px);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+  }
+  .course-item[data-course]:hover {
+    background: linear-gradient(90deg, #ffffff05, transparent 80%);
+    transform: translateX(3px);
+  }
+  .course-item[data-course]:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+  /* Per-stage hover accent on the arrow */
+  .s15 .course-item[data-course]::after { color: var(--accent2); }
+  .s2  .course-item[data-course]::after { color: var(--accent3); }
+  .s3  .course-item[data-course]::after { color: var(--accent4); }
+  .s4  .course-item[data-course]::after { color: var(--gold); }
+
+  /* ── Modal / Popup ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 6, 10, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 24px;
+    overflow-y: auto;
+  }
+  .modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal {
+    background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    max-width: 640px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.94) translateY(12px);
+    transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px var(--border);
+  }
+  .modal-overlay.active .modal { transform: scale(1) translateY(0); }
+
+  .modal::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 8px 8px 0 0;
+  }
+  .modal[data-stage="s15"]::before { background: var(--accent2); }
+  .modal[data-stage="s2"]::before  { background: var(--accent3); }
+  .modal[data-stage="s3"]::before  { background: var(--accent4); }
+  .modal[data-stage="s4"]::before  { background: var(--gold); }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    font-family: 'Barlow Condensed', sans-serif;
+    transition: color 0.2s, border-color 0.2s, transform 0.2s;
+    z-index: 2;
+  }
+  .modal-close:hover {
+    color: var(--text-bright);
+    border-color: var(--accent);
+    transform: rotate(90deg);
+  }
+
+  .modal-body {
+    padding: 36px 36px 32px;
+  }
+
+  .modal-stage-tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+    font-weight: 600;
+    background: var(--accent)22;
+    color: var(--accent);
+    border: 1px solid var(--accent)44;
+  }
+  .modal[data-stage="s15"] .modal-stage-tag { background: #f4a26122; color: var(--accent2); border-color: #f4a26144; }
+  .modal[data-stage="s2"]  .modal-stage-tag { background: var(--accent3)22; color: var(--accent3); border-color: var(--accent3)44; }
+  .modal[data-stage="s3"]  .modal-stage-tag { background: var(--accent4)22; color: var(--accent4); border-color: var(--accent4)44; }
+  .modal[data-stage="s4"]  .modal-stage-tag { background: var(--gold)22; color: var(--gold); border-color: var(--gold)44; }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    line-height: 1.05;
+    color: var(--text-bright);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .modal-author {
+    font-size: 13px;
+    color: var(--accent2);
+    letter-spacing: 0.5px;
+    margin-bottom: 22px;
+  }
+
+  .modal-section {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .modal-section:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+
+  .modal-section-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .modal-section-label::before {
+    content: '';
+    width: 18px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .modal[data-stage="s15"] .modal-section-label::before { background: var(--accent2); }
+  .modal[data-stage="s2"]  .modal-section-label::before { background: var(--accent3); }
+  .modal[data-stage="s3"]  .modal-section-label::before { background: var(--accent4); }
+  .modal[data-stage="s4"]  .modal-section-label::before { background: var(--gold); }
+
+  .modal-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+  .modal-text em {
+    color: var(--accent2);
+    font-style: italic;
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+  }
+
+  /* Tutor block */
+  .tutor-block {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  .tutor-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1px;
+    color: var(--bg);
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    box-shadow: 0 6px 20px rgba(232, 114, 42, 0.25), inset 0 0 0 2px rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .tutor-avatar > span {
+    /* Initials sit underneath, fully filling the avatar */
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tutor-avatar > img {
+    /* Image overlays the initials when present + loaded */
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    background: inherit;
+  }
+  /* When image is hidden (no src or load error), initials show through */
+  .tutor-avatar > img:not([src]),
+  .tutor-avatar > img[src=""],
+  .tutor-avatar > img.failed {
+    display: none;
+  }
+  .modal[data-stage="s15"] .tutor-avatar {
+    background: linear-gradient(135deg, var(--accent2), #e07c40);
+    box-shadow: 0 6px 20px rgba(244, 162, 97, 0.25), inset 0 0 0 2px rgba(255,255,255,0.08);
+  }
+  .modal[data-stage="s2"] .tutor-avatar {
+    background: linear-gradient(135deg, var(--accent3), #4cc9c0);
+    box-shadow: 0 6px 20px rgba(42, 157, 143, 0.3), inset 0 0 0 2px rgba(255,255,255,0.08);
+  }
+  .modal[data-stage="s3"] .tutor-avatar {
+    background: linear-gradient(135deg, var(--accent4), #9d4edd);
+    box-shadow: 0 6px 20px rgba(199, 125, 255, 0.25), inset 0 0 0 2px rgba(255,255,255,0.08);
+  }
+  .modal[data-stage="s4"] .tutor-avatar {
+    background: linear-gradient(135deg, var(--gold), #f4a261);
+    box-shadow: 0 6px 20px rgba(255, 209, 102, 0.3), inset 0 0 0 2px rgba(255,255,255,0.08);
+    color: #1a1410;
+  }
+
+  .tutor-info { flex: 1; min-width: 0; }
+  .tutor-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--text-bright);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  .tutor-role {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .modal[data-stage="s15"] .tutor-role { color: var(--accent2); }
+  .modal[data-stage="s2"]  .tutor-role { color: var(--accent3); }
+  .modal[data-stage="s3"]  .tutor-role { color: var(--accent4); }
+  .modal[data-stage="s4"]  .tutor-role { color: var(--gold); }
+  .tutor-bio {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* Roadmap connection emphasis */
+  .roadmap-connection {
+    background: linear-gradient(135deg, #ffd16608, transparent);
+    border-left: 2px solid var(--gold);
+    padding: 14px 18px;
+    border-radius: 0 4px 4px 0;
+    margin-top: 6px;
+  }
+  .roadmap-connection .modal-text {
+    font-size: 13.5px;
+  }
+
+  body.modal-open { overflow: hidden; }
+
+  /* ═══════════════════════════════════════════════════════════════
+     ░░ CYBERPUNK SCROLL EFFECTS ░░
+     Layered on top of the existing aesthetic — does not replace it.
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* ── Scroll progress indicator (neon bar at top) ── */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent3), var(--accent), var(--accent4), var(--accent5));
+    background-size: 300% 100%;
+    z-index: 1500;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 12px var(--accent), 0 0 4px var(--accent);
+    animation: cp-shift 8s linear infinite;
+  }
+  @keyframes cp-shift {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
+  .scroll-progress::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 80px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7));
+    filter: blur(2px);
+  }
+
+  /* ── Floating cyberpunk particles in background ── */
+  .cp-particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .cp-particles span {
+    position: absolute;
+    display: block;
+    width: 1px;
+    height: 1px;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    opacity: 0;
+    animation: cp-float 18s linear infinite;
+  }
+  .cp-particles span:nth-child(odd) {
+    background: var(--accent5);
+    box-shadow: 0 0 6px var(--accent5);
+  }
+  .cp-particles span:nth-child(3n) {
+    background: var(--accent4);
+    box-shadow: 0 0 6px var(--accent4);
+    width: 2px; height: 2px;
+  }
+  @keyframes cp-float {
+    0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.4; }
+    100% { transform: translateY(-10vh) translateX(20px); opacity: 0; }
+  }
+
+  /* ── Section reveal: each stage starts hidden, animates in on scroll ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.9s cubic-bezier(0.2, 0.9, 0.3, 1);
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Stage number — gigantic, decoded reveal ── */
+  .stage-number {
+    position: relative;
+    transition: text-shadow 0.4s, color 0.4s;
+  }
+  .reveal.in-view .stage-number {
+    animation: cp-decode 1.4s cubic-bezier(0.5, 0, 0.2, 1) both;
+  }
+  @keyframes cp-decode {
+    0%   { letter-spacing: 30px; opacity: 0; filter: blur(8px); }
+    40%  { letter-spacing: 8px;  opacity: 0.4; filter: blur(2px); }
+    70%  { letter-spacing: 0px;  opacity: 0.7; filter: blur(0); }
+    100% { letter-spacing: 1px;  opacity: 1; filter: blur(0); }
+  }
+
+  /* ── Stage title — cyberpunk glitch on entrance + on hover ── */
+  .stage-title {
+    position: relative;
+    cursor: default;
+  }
+  .reveal.in-view .stage-title {
+    animation: cp-title-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
+  }
+  @keyframes cp-title-in {
+    0%   { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateX(-12px); }
+    60%  { opacity: 1; clip-path: inset(0 0% 0 0); transform: translateX(0); }
+    65%  { transform: translateX(3px); }
+    70%  { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+  }
+  .stage-title::before,
+  .stage-title::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .stage-title::before {
+    color: var(--accent5);
+    transform: translate(-2px, 0);
+    mix-blend-mode: screen;
+  }
+  .stage-title::after {
+    color: var(--accent);
+    transform: translate(2px, 0);
+    mix-blend-mode: screen;
+  }
+  .stage-title:hover::before,
+  .stage-title:hover::after {
+    opacity: 0.85;
+    animation: cp-glitch 0.4s steps(2) infinite;
+  }
+  @keyframes cp-glitch {
+    0%   { transform: translate(-2px, 0); }
+    25%  { transform: translate(2px, -1px); }
+    50%  { transform: translate(-1px, 1px); }
+    75%  { transform: translate(2px, 0); }
+    100% { transform: translate(-2px, 0); }
+  }
+
+  /* ── Scan line that sweeps across stage on entrance ── */
+  .section-header {
+    position: relative;
+    overflow: hidden;
+  }
+  .section-header::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(76, 201, 240, 0.06) 48%,
+      rgba(232, 114, 42, 0.18) 50%,
+      rgba(76, 201, 240, 0.06) 52%,
+      transparent 60%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+  .reveal.in-view .section-header::after {
+    animation: cp-scan 1.4s ease-out 0.1s;
+  }
+  .s15 .section-header::after { background: linear-gradient(90deg, transparent 40%, rgba(244,162,97,0.22) 50%, transparent 60%); }
+  .s2 .section-header::after  { background: linear-gradient(90deg, transparent 40%, rgba(42,157,143,0.22) 50%, transparent 60%); }
+  .s3 .section-header::after  { background: linear-gradient(90deg, transparent 40%, rgba(199,125,255,0.22) 50%, transparent 60%); }
+  .s4 .section-header::after  { background: linear-gradient(90deg, transparent 40%, rgba(255,209,102,0.22) 50%, transparent 60%); }
+  .s5 .section-header::after  { background: linear-gradient(90deg, transparent 40%, rgba(76,201,240,0.22) 50%, transparent 60%); }
+  @keyframes cp-scan {
+    0%   { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* ── Cards: cyberpunk corner brackets that draw themselves on entrance ── */
+  .card {
+    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1),
+                box-shadow 0.4s,
+                border-color 0.4s;
+  }
+  .reveal.in-view .card {
+    animation: cp-card-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  /* Stagger: each card waits a bit longer than the previous */
+  .reveal.in-view .stage-grid .card:nth-child(1),
+  .reveal.in-view .stage-grid-3 .card:nth-child(1) { animation-delay: 0.4s; }
+  .reveal.in-view .stage-grid .card:nth-child(2),
+  .reveal.in-view .stage-grid-3 .card:nth-child(2) { animation-delay: 0.55s; }
+  .reveal.in-view .stage-grid-3 .card:nth-child(3) { animation-delay: 0.7s; }
+  .reveal.in-view .card.full,
+  .reveal.in-view .card.milestones { animation-delay: 0.65s; }
+  @keyframes cp-card-up {
+    0%   { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Cyberpunk corner brackets — only on hover for subtlety */
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 10px; height: 10px;
+    border-top: 1px solid transparent;
+    border-right: 1px solid transparent;
+    transition: border-color 0.3s, width 0.3s, height 0.3s;
+  }
+  .card:hover::after {
+    width: 14px; height: 14px;
+    border-color: var(--accent);
+  }
+  .card.books:hover::after,
+  .s15 .card:hover::after { border-color: var(--accent2); }
+  .s2 .card:hover::after  { border-color: var(--accent3); }
+  .s3 .card:hover::after  { border-color: var(--accent4); }
+  .s4 .card:hover::after  { border-color: var(--gold); }
+  .s5 .card:hover::after  { border-color: var(--accent5); }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4),
+                0 0 0 1px var(--border2),
+                0 0 30px rgba(232,114,42,0.06);
+  }
+  .s15 .card:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 0 1px var(--border2), 0 0 30px rgba(244,162,97,0.08); }
+  .s2 .card:hover  { box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 0 1px var(--border2), 0 0 30px rgba(42,157,143,0.08); }
+  .s3 .card:hover  { box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 0 1px var(--border2), 0 0 30px rgba(199,125,255,0.08); }
+  .s4 .card:hover  { box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 0 1px var(--border2), 0 0 30px rgba(255,209,102,0.10); }
+  .s5 .card:hover  { box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 0 1px var(--border2), 0 0 30px rgba(76,201,240,0.10); }
+
+  /* ── Stage badge — subtle pulse glow ── */
+  .reveal.in-view .stage-badge {
+    animation: cp-badge-glow 2.4s ease-in-out infinite 0.6s;
+  }
+  @keyframes cp-badge-glow {
+    0%, 100% { box-shadow: 0 0 0 rgba(232,114,42,0); }
+    50%      { box-shadow: 0 0 18px rgba(232,114,42,0.25); }
+  }
+
+  /* ── Course item: slight chromatic-aberration shadow on hover (subtle) ── */
+  .course-item[data-course]:hover .course-name {
+    text-shadow: -1px 0 rgba(76,201,240,0.4), 1px 0 rgba(232,114,42,0.4);
+  }
+  .s4 .course-item[data-course]:hover .course-name {
+    text-shadow: -1px 0 rgba(255,209,102,0.4), 1px 0 rgba(232,114,42,0.4);
+  }
+
+  /* ── Hero h1 — subtle decode reveal on first load ── */
+  .hero h1 {
+    animation: cp-hero-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
+  }
+  .hero h1 span {
+    animation: cp-hero-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
+  }
+  @keyframes cp-hero-in {
+    0%   { opacity: 0; clip-path: inset(0 100% 0 0); }
+    100% { opacity: 1; clip-path: inset(0 0% 0 0); }
+  }
+
+  .hero-tag {
+    animation: cp-tag-in 1s ease-out 0.1s both;
+  }
+  @keyframes cp-tag-in {
+    0%   { opacity: 0; letter-spacing: 16px; }
+    100% { opacity: 1; letter-spacing: 4px; }
+  }
+
+  /* ── Timeline bar segments — animated width on view ── */
+  .timeline-bar.reveal.in-view .tl-seg {
+    animation: cp-seg-grow 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .timeline-bar.reveal.in-view .tl-seg:nth-child(1) { animation-delay: 0.2s; }
+  .timeline-bar.reveal.in-view .tl-seg:nth-child(2) { animation-delay: 0.32s; }
+  .timeline-bar.reveal.in-view .tl-seg:nth-child(3) { animation-delay: 0.44s; }
+  .timeline-bar.reveal.in-view .tl-seg:nth-child(4) { animation-delay: 0.56s; }
+  .timeline-bar.reveal.in-view .tl-seg:nth-child(5) { animation-delay: 0.68s; }
+  .timeline-bar.reveal.in-view .tl-seg:nth-child(6) { animation-delay: 0.80s; }
+  @keyframes cp-seg-grow {
+    0%   { transform: scaleX(0); transform-origin: left; opacity: 0; }
+    100% { transform: scaleX(1); transform-origin: left; opacity: 1; }
+  }
+
+  /* Respect motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .reveal.in-view * { animation: none !important; }
+    .cp-particles, .scroll-progress { display: none; }
+    .hero h1, .hero h1 span, .hero-tag { animation: none; }
+  }
+
   /* ── Tablet: ≤ 900px ── */
   @media (max-width: 900px) {
     .hero {
@@ -729,6 +1318,14 @@
     .footer { flex-direction: column; padding: 20px 20px; gap: 14px; text-align: center; }
     .footer-quote { font-size: 13px; }
     .footer-brand { text-align: center; }
+
+    /* Modal mobile tweaks */
+    .modal-overlay { padding: 12px; align-items: flex-start; padding-top: 24px; }
+    .modal-body { padding: 28px 22px 24px; }
+    .modal-title { font-size: 26px; }
+    .tutor-avatar { width: 60px; height: 60px; font-size: 22px; }
+    .tutor-name { font-size: 19px; }
+    .tutor-block { gap: 14px; }
   }
 
   @media print {
@@ -738,6 +1335,12 @@
 </style>
 </head>
 <body>
+
+<!-- Cyberpunk scroll progress indicator -->
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<!-- Floating particles in background -->
+<div class="cp-particles" id="cpParticles" aria-hidden="true"></div>
 
 <!-- HERO -->
 <section class="hero">
@@ -767,12 +1370,12 @@
 <div class="content">
 
   <!-- ====== STAGE 1 ====== -->
-  <div class="s1">
+  <div class="s1 reveal">
     <div class="section-header">
       <div class="stage-number">01</div>
       <div class="stage-info">
         <span class="stage-badge">FOUNDATION</span>
-        <h2 class="stage-title">Maya, ZBrush & Anatomy Theory</h2>
+        <h2 class="stage-title" data-text="Maya, ZBrush & Anatomy Theory">Maya, ZBrush & Anatomy Theory</h2>
         <div class="stage-duration">⏱ Estimated: 3–4 Months</div>
         <p class="stage-summary">Build your software literacy in Maya and ZBrush simultaneously while absorbing the theory of human anatomy through Zarins' books. No sculpting details yet — just building the mental model and the interface confidence.</p>
       </div>
@@ -781,30 +1384,30 @@
     <div class="stage-grid">
       <div class="card courses">
         <div class="card-title">▲ Courses</div>
-        <div class="course-item">
+        <div class="course-item" data-course="maya-vol1">
           <div class="course-name">Introduction to Maya 2023 — Volume 1</div>
           <div class="course-author">Eric Keller · Gnomon Workshop</div>
           <div class="course-tag">12 Chapters · Interface, nodes, navigation</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="maya-vol2">
           <div class="course-name">Introduction to Maya 2023 — Volume 2</div>
           <div class="course-author">Eric Keller · Gnomon Workshop</div>
           <div class="course-tag">14 Chapters · Polygon modeling, UV toolkit, animation</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="maya-vol3">
           <div class="course-name">Introduction to Maya 2023 — Volume 3</div>
           <div class="course-author">Eric Keller · Gnomon Workshop</div>
           <div class="course-tag">Shading, lighting, Arnold, export to Unreal Engine 5</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="ultimate-zbrush">
           <div class="course-name">Ultimate ZBrush Guide</div>
           <div class="course-author">Pablo Munoz Gomez</div>
           <div class="course-tag">Reference guide · Core ZBrush concepts & tools</div>
         </div>
-        <div class="course-item">
-          <div class="course-name">ZBrush for Beginners — Full Series <span class="course-new">ADDED</span></div>
-          <div class="course-author">Michael Pavlovich · YouTube (FREE)</div>
-          <div class="course-tag">Hands-on interface drills · Free bridge to Stage 1.5</div>
+        <div class="course-item" data-course="pavlovich-zbrush">
+          <div class="course-name">Intro to ZBrush — 12 Part Series <span class="course-new">UPDATED</span></div>
+          <div class="course-author">Michael Pavlovich · ArtStation Learning</div>
+          <div class="course-tag">Comprehensive interface mastery · Full sculpting fundamentals</div>
         </div>
       </div>
       <div class="card books">
@@ -824,7 +1427,7 @@
         <div class="card-title">◈ Practice Exercises — When & What</div>
         <div class="exercise-item"><div class="ex-week">Wk 1–2</div><div class="ex-text">Daily Maya interface drills. Model 5 simple hard-surface props from reference photos (mug, box, chair, lamp, tool).</div></div>
         <div class="exercise-item"><div class="ex-week">Wk 3–4</div><div class="ex-text">UV unwrap your 5 props in Maya. Practice clean UV layouts — this is muscle memory you'll use forever.</div></div>
-        <div class="exercise-item"><div class="ex-week">Wk 5–6</div><div class="ex-text">First ZBrush sessions. Follow Pavlovich's YouTube series. Sculpt 10 simple organic forms (rocks, bark, cloth folds).</div></div>
+        <div class="exercise-item"><div class="ex-week">Wk 5–6</div><div class="ex-text">First ZBrush sessions. Follow Pavlovich's ArtStation series, Parts 1–3. Sculpt 10 simple organic forms (rocks, bark, cloth folds).</div></div>
         <div class="exercise-item"><div class="ex-week">Wk 7–10</div><div class="ex-text">Copy anatomy plates from Zarins — draw/trace them. Do 2–3 pages per session. Do this with pencil and paper.</div></div>
         <div class="exercise-item"><div class="ex-week">Wk 11–16</div><div class="ex-text">Sculpt a basic human mannequin in ZBrush from a sphere — proportions only, no details. Repeat 3 times until proportions feel natural.</div></div>
       </div>
@@ -840,12 +1443,12 @@
   </div>
 
   <!-- ====== STAGE 1.5 ====== -->
-  <div class="s15">
+  <div class="s15 reveal">
     <div class="section-header">
       <div class="stage-number">1.5</div>
       <div class="stage-info">
         <span class="stage-badge">ANATOMY IN ZBRUSH</span>
-        <h2 class="stage-title">Sculpting the Human Form</h2>
+        <h2 class="stage-title" data-text="Sculpting the Human Form">Sculpting the Human Form</h2>
         <div class="stage-duration">⏱ Estimated: 4–5 Months</div>
         <p class="stage-summary">This is where theory meets clay. You will apply everything you've read in Zarins' books into actual ZBrush sculpts. Do not rush this stage. It is the foundation your entire career will stand on.</p>
       </div>
@@ -854,17 +1457,17 @@
     <div class="stage-grid">
       <div class="card courses">
         <div class="card-title">▲ Courses</div>
-        <div class="course-item">
+        <div class="course-item" data-course="artistic-anatomy">
           <div class="course-name">Artistic Anatomy</div>
           <div class="course-author">Dan Crossland</div>
           <div class="course-tag">ZBrush anatomy · Structured muscle-by-muscle approach</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="grassetti-anatomy">
           <div class="course-name">Male Anatomy & Female Anatomy</div>
           <div class="course-author">Raf Grassetti · Gumroad</div>
           <div class="course-tag">5+ hrs male · Blocking → secondary → texturing · Separate female extension</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="facial-sculpting">
           <div class="course-name">Character Facial Sculpting</div>
           <div class="course-author">CGMA</div>
           <div class="course-tag">Head planes · Facial anatomy · Expressions in ZBrush</div>
@@ -894,12 +1497,12 @@
   </div>
 
   <!-- ====== STAGE 2 ====== -->
-  <div class="s2">
+  <div class="s2 reveal">
     <div class="section-header">
       <div class="stage-number">02</div>
       <div class="stage-info">
         <span class="stage-badge">CHARACTER PIPELINE</span>
-        <h2 class="stage-title">Full Character Creation</h2>
+        <h2 class="stage-title" data-text="Full Character Creation">Full Character Creation</h2>
         <div class="stage-duration">⏱ Estimated: 5–6 Months</div>
         <p class="stage-summary">Now you sculpt with purpose. You will learn the full pipeline: high-poly sculpt → retopology → UVs → baking → first portfolio piece. The Ackeem Durrant course alone is 47+ hours — budget your time accordingly.</p>
       </div>
@@ -908,12 +1511,12 @@
     <div class="stage-grid">
       <div class="card courses">
         <div class="card-title">▲ Courses</div>
-        <div class="course-item">
+        <div class="course-item" data-course="character-bust">
           <div class="course-name">Creating a Character Bust</div>
           <div class="course-author">Gnomon Workshop</div>
           <div class="course-tag">High-poly character bust · Sculpting, detailing, render</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="ackeem-character">
           <div class="course-name">Character Creation for Games</div>
           <div class="course-author">Ackeem Durrant · Vertex School</div>
           <div class="course-tag">47h 18m · Full AAA game character pipeline · PBR workflow</div>
@@ -949,12 +1552,12 @@
   </div>
 
   <!-- ====== STAGE 3 ====== -->
-  <div class="s3">
+  <div class="s3 reveal">
     <div class="section-header">
       <div class="stage-number">03</div>
       <div class="stage-info">
         <span class="stage-badge">EXPANDING TOOLKIT</span>
-        <h2 class="stage-title">Texture, Cloth & Hair</h2>
+        <h2 class="stage-title" data-text="Texture, Cloth & Hair">Texture, Cloth & Hair</h2>
         <div class="stage-duration">⏱ Estimated: 4–5 Months</div>
         <p class="stage-summary">A great sculpt without great textures, clothing, and hair is an incomplete character. This stage transforms your characters from clay to life. These are the skills that separate intermediate from advanced character artists.</p>
       </div>
@@ -963,22 +1566,22 @@
     <div class="stage-grid-3">
       <div class="card courses">
         <div class="card-title">▲ Courses</div>
-        <div class="course-item">
+        <div class="course-item" data-course="substance-texturing">
           <div class="course-name">Character Texturing for Games in Substance</div>
           <div class="course-author">Saurabh Jethani</div>
           <div class="course-tag">PBR texturing · Skin, fabric, metal workflows</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="intro-marvelous">
           <div class="course-name">Intro to Marvelous Designer</div>
           <div class="course-author">Erika Lochs</div>
           <div class="course-tag">Cloth simulation · Patterns, seams, physics</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="realistic-fabric">
           <div class="course-name">Creating Realistic Fabric & Clothing for Games</div>
           <div class="course-author">Erika Lochs</div>
           <div class="course-tag">Advanced cloth → ZBrush detailing → game pipeline</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="hair-creation">
           <div class="course-name">Character Hair Creation</div>
           <div class="course-author">John Lithvall</div>
           <div class="course-tag">Hair cards, fibermesh, grooming for game characters</div>
@@ -1004,12 +1607,12 @@
   </div>
 
   <!-- ====== STAGE 4 ====== -->
-  <div class="s4">
+  <div class="s4 reveal">
     <div class="section-header">
       <div class="stage-number">04</div>
       <div class="stage-info">
         <span class="stage-badge">LIKENESS & REALISM</span>
-        <h2 class="stage-title">Sculpting Real People</h2>
+        <h2 class="stage-title" data-text="Sculpting Real People">Sculpting Real People</h2>
         <div class="stage-duration">⏱ Estimated: 4–6 Months</div>
         <p class="stage-summary">Likeness sculpting is the hardest and most coveted skill in realistic character art. This stage will define your specialization and is the clearest signal to studios like Naughty Dog that you're ready.</p>
       </div>
@@ -1026,22 +1629,22 @@
     <div class="stage-grid">
       <div class="card courses">
         <div class="card-title">▲ Courses</div>
-        <div class="course-item">
+        <div class="course-item" data-course="likeness-sculpting">
           <div class="course-name">Likeness Sculpting</div>
           <div class="course-author">Frank Tzeng · Gumroad</div>
           <div class="course-tag">16 hrs · Shape sculpting, secondary anatomy, pores, fibermesh hair</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="fan-art-character">
           <div class="course-name">Creating Realistic Fan Art Character</div>
           <div class="course-author">Frank Tzeng · Gumroad</div>
           <div class="course-tag">19+ hrs · Full character sculpt from sphere, polypaint, KeyShot render</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="kris-costa">
           <div class="course-name">YouTube Channel — Ongoing <span class="course-new">FREE</span></div>
           <div class="course-author">Kris Costa</div>
           <div class="course-tag">Hyper-realistic sculpting · Watch throughout this entire stage</div>
         </div>
-        <div class="course-item">
+        <div class="course-item" data-course="skin-detailing">
           <div class="course-name">Skin Detailing & Scanned Textures <span class="course-new">ADDED</span></div>
           <div class="course-author">Ian Spriggs / Texturing.xyz resources</div>
           <div class="course-tag">Hyper-realism skin workflow · Pore scanning & application</div>
@@ -1071,12 +1674,12 @@
   </div>
 
   <!-- ====== STAGE 5 — NEW ====== -->
-  <div class="s5">
+  <div class="s5 reveal">
     <div class="section-header">
       <div class="stage-number">05</div>
       <div class="stage-info">
         <span class="stage-badge">NEW · PORTFOLIO & INDUSTRY</span>
-        <h2 class="stage-title">Get the Job</h2>
+        <h2 class="stage-title" data-text="Get the Job">Get the Job</h2>
         <div class="stage-duration">⏱ Estimated: 2–3 Months</div>
         <p class="stage-summary">This stage didn't exist in your original plan — and it's the one that converts skill into employment. No amount of skill matters if your portfolio isn't curated, presented, and in front of the right people.</p>
       </div>
@@ -1110,7 +1713,7 @@
   </div>
 
   <!-- TIMELINE -->
-  <div class="timeline-bar">
+  <div class="timeline-bar reveal">
     <div class="timeline-bar-title">FULL ROADMAP TIMELINE</div>
     <div class="timeline-track">
       <div class="timeline-segments">
@@ -1141,6 +1744,371 @@
   <div class="footer-quote">"Discipline is the bridge between goals and accomplishment. Every great Naughty Dog character started with someone who showed up every single day."</div>
   <div class="footer-brand">YOUR ROADMAP<small>3D Character Art Mastery · 2025–2027</small></div>
 </footer>
+
+<!-- ============== COURSE DETAIL MODAL ============== -->
+<div class="modal-overlay" id="courseModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal" id="modalInner" data-stage="s1">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div class="modal-body">
+      <span class="modal-stage-tag" id="modalStageTag">FOUNDATION</span>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <div class="modal-author" id="modalAuthor"></div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">About the Course</div>
+        <p class="modal-text" id="modalDescription"></p>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">Your Tutor</div>
+        <div class="tutor-block">
+          <div class="tutor-avatar" id="modalAvatar">
+            <span id="modalAvatarInitials"></span>
+            <img id="modalAvatarImg" alt="" loading="lazy">
+          </div>
+          <div class="tutor-info">
+            <div class="tutor-name" id="modalTutorName"></div>
+            <div class="tutor-role" id="modalTutorRole"></div>
+            <p class="tutor-bio" id="modalTutorBio"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-label">✦ How This Fits Your Naughty Dog Roadmap</div>
+        <div class="roadmap-connection">
+          <p class="modal-text" id="modalRoadmap"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ────────────────────────────────────────────────────────────────
+  // Course database — descriptions, tutors, and roadmap relevance.
+  // Each tutor's bio reflects their actual industry credits & role.
+  // ────────────────────────────────────────────────────────────────
+  const COURSES = {
+    /* ===== STAGE 1 — FOUNDATION ===== */
+    "maya-vol1": {
+      stage: "s1", stageLabel: "STAGE 01 · FOUNDATION",
+      title: "Introduction to Maya 2023 — Volume 1",
+      author: "Eric Keller · Gnomon Workshop",
+      description: "A 12-chapter guided tour of Maya's interface, covering navigation and every editor you'll need when building 3D models and scenes. Eric walks through Maya's node-based workflow — the nodes that define your shapes, materials, animation, lights, and cameras. This is the absolute starting point for everything else in your roadmap.",
+      tutor: { name: "Eric Keller", role: "Emmy-Nominated CG Artist · Gnomon Veteran", initials: "EK",
+        photo: "https://d2tmthzm7jp200.cloudfront.net/instructors/avatars/000/000/136/square/Eric_Keller_BIO.jpeg",
+        bio: "Eric is a CG artist with 25+ years in the industry, with credits on John Wick: Chapter 4, Aquaman, Star Trek Beyond, and 10 Cloverfield Lane. He earned an Emmy nomination for his title-design work on Netflix's Wednesday. He has taught Maya and ZBrush at the Gnomon school in Hollywood, written multiple top-rated books, and was a guest lecturer at Harvard Medical School." },
+      roadmap: "Maya is the backbone of every AAA character pipeline — Naughty Dog included. Before you can sculpt, retopologize, or texture anything in Stages 2–4, you need to navigate Maya without thinking. Volume 1 builds the muscle memory you'll lean on for the next two years."
+    },
+    "maya-vol2": {
+      stage: "s1", stageLabel: "STAGE 01 · FOUNDATION",
+      title: "Introduction to Maya 2023 — Volume 2",
+      author: "Eric Keller · Gnomon Workshop",
+      description: "14 chapters focused on the primary tools you'll use to build and animate 3D assets in Maya — the Modeling Toolkit, UV Toolkit, Graph Editor, deformers, and animation layers. Includes a bonus chapter on tools introduced in Maya 2023.",
+      tutor: { name: "Eric Keller", role: "Emmy-Nominated CG Artist · Gnomon Veteran", initials: "EK",
+        photo: "https://d2tmthzm7jp200.cloudfront.net/instructors/avatars/000/000/136/square/Eric_Keller_BIO.jpeg",
+        bio: "Eric is a CG artist with 25+ years in the industry, with credits on John Wick: Chapter 4, Aquaman, Star Trek Beyond, and 10 Cloverfield Lane. He earned an Emmy nomination for his title-design work on Netflix's Wednesday. He has taught Maya and ZBrush at the Gnomon school in Hollywood, written multiple top-rated books, and was a guest lecturer at Harvard Medical School." },
+      roadmap: "Volume 2 is where Maya stops feeling foreign and starts feeling like a tool. The UV Toolkit alone is non-negotiable — every character you build from Stage 2 onward needs clean UVs before it can be baked or textured. The polygon modeling skills here also feed directly into your retopology work."
+    },
+    "maya-vol3": {
+      stage: "s1", stageLabel: "STAGE 01 · FOUNDATION",
+      title: "Introduction to Maya 2023 — Volume 3",
+      author: "Eric Keller · Gnomon Workshop",
+      description: "Lighting, shading, and rendering with Arnold, plus the full pipeline for exporting assets into a real-time game engine like Unreal Engine 5. This is where your Maya scenes finally go from technical files to presentation-ready.",
+      tutor: { name: "Eric Keller", role: "Emmy-Nominated CG Artist · Gnomon Veteran", initials: "EK",
+        photo: "https://d2tmthzm7jp200.cloudfront.net/instructors/avatars/000/000/136/square/Eric_Keller_BIO.jpeg",
+        bio: "Eric is a CG artist with 25+ years in the industry, with credits on John Wick: Chapter 4, Aquaman, Star Trek Beyond, and 10 Cloverfield Lane. He earned an Emmy nomination for his title-design work on Netflix's Wednesday. He has taught Maya and ZBrush at the Gnomon school in Hollywood, written multiple top-rated books, and was a guest lecturer at Harvard Medical School." },
+      roadmap: "Game-engine export is what separates a sculpt from a portfolio piece. Naughty Dog ships in their custom engine, but the principles — proper export, real-time shading, lighting setup — are universal. This volume sets you up to present your work the way studios actually evaluate it."
+    },
+    "ultimate-zbrush": {
+      stage: "s1", stageLabel: "STAGE 01 · FOUNDATION",
+      title: "The Ultimate ZBrush Guide",
+      author: "Pablo Munoz Gomez",
+      description: "A 7-core-module + 3-bonus-module reference covering every essential concept and tool in ZBrush — over 35 hours of structured instruction with exercise files, custom brushes, and alphas. Aimed at absolute beginners and at artists who can follow along with tutorials but struggle to translate that knowledge into their own work.",
+      tutor: { name: "Pablo Munoz Gomez", role: "3D Concept Artist · Founder of ZBrushGuides", initials: "PM",
+        photo: "https://d2tmthzm7jp200.cloudfront.net/instructors/avatars/000/000/228/square/PabloM_headshot.jpg",
+        bio: "Pablo is a Melbourne-based 3D concept and character artist who has been working in ZBrush for over a decade. He's the founder of ZBrushGuides.com and 3DConceptArtist.com, a featured Pixologic ZBrushLIVE artist, and has built one of the most respected ZBrush teaching platforms outside of the official channels." },
+      roadmap: "ZBrush is the irreplaceable tool for character art. While Pavlovich's series teaches you the moves, Pablo's guide is the reference book you keep open beside it — the place you return to whenever you forget how DynaMesh, masking, or subtools work. Together they form a complete foundation for everything from Stage 1.5 onward."
+    },
+    "pavlovich-zbrush": {
+      stage: "s1", stageLabel: "STAGE 01 · FOUNDATION",
+      title: "Intro to ZBrush — 12 Part Series",
+      author: "Michael Pavlovich · ArtStation Learning",
+      description: "A comprehensive 12-course series that takes you from your first ZBrush opening through interface customization, subtools, gizmo, blockout techniques, ZSpheres, hard surface, SubD modeling, ZModeler, posing, and final rendering in KeyShot — all built around sculpting a complete basketball player character. The most thorough beginner-to-intermediate ZBrush curriculum publicly available.",
+      tutor: { name: "Michael Pavlovich", role: "Director of Character, Weapon & Vehicle Art · Certain Affinity", initials: "MP",
+        photo: "https://pixologic.com/zbrushlive/wp-content/uploads/2017/02/MikePavlovich.jpg",
+        bio: "Michael is the Director of Character, Weapon, and Vehicle Art at Certain Affinity in Austin, TX, where he leads 3D concept-art pipelines for franchises including Halo, Call of Duty, and DOOM. He started at Electronic Arts on Madden and NCAA Football, then moved to Daybreak Games to bring DC Universe Online characters to life. He's one of the most influential ZBrush educators of the last decade." },
+      roadmap: "The ArtStation series replaces a free YouTube playlist with a properly structured, project-based curriculum that mirrors a real production pipeline. By the end you've built a full character from scratch — exactly the workflow you'll repeat (and refine) in every stage that follows. The KeyShot rendering chapter alone teaches you how to present sculpts professionally on ArtStation."
+    },
+
+    /* ===== STAGE 1.5 — ANATOMY IN ZBRUSH ===== */
+    "artistic-anatomy": {
+      stage: "s15", stageLabel: "STAGE 1.5 · ANATOMY IN ZBRUSH",
+      title: "Artistic Anatomy",
+      author: "Daniel Crossland · Mold3D Academy",
+      description: "An 8-week deep dive into human anatomy and physiology, taught in clear and digestible chunks. You'll learn origin and insertion points of muscles, anatomical terminology, the form and function of major structures — and most importantly, how to translate that knowledge directly into ZBrush sculpts using a no-frills, brush-economical approach.",
+      tutor: { name: "Daniel Crossland", role: "Character Art Director · Ninja Theory", initials: "DC",
+        bio: "Dan is the Character Art Director at Ninja Theory, the studio behind Hellblade and Hellblade II: Senua's Saga — both widely regarded as benchmarks for facial realism in real-time. Born in Sheffield and trained at the Scotland Street Art School in figurative painting and drawing, he later pursued formal anatomy and physiology studies. His teaching style is famously direct and patient, focused on getting students to 'see with honest eyes.'" },
+      roadmap: "If Stage 1 taught you the tools, Stage 1.5 teaches you what to actually sculpt with them. Dan's no-shortcuts anatomy approach is exactly the standard set by character art directors at studios like Naughty Dog and Ninja Theory. Skipping or rushing this stage is the single most common reason aspiring character artists never get hired — don't do it."
+    },
+    "grassetti-anatomy": {
+      stage: "s15", stageLabel: "STAGE 1.5 · ANATOMY IN ZBRUSH",
+      title: "Male Anatomy & Female Anatomy",
+      author: "Raf Grassetti · Gumroad",
+      description: "Raf's signature anatomy course covers his full process for creating male models — proportions, muscle groups, landmarks, blocking → secondary forms → texturing — in 5+ hours of video with project files. The female extension applies the same method while highlighting the key differences in fat distribution, pelvis, and proportional balance.",
+      tutor: { name: "Raf Grassetti", role: "Art Director · Naughty Dog (Former God of War AD)", initials: "RG",
+        photo: "https://d2tmthzm7jp200.cloudfront.net/instructors/avatars/000/000/205/square/rafael_grassetti_headshot.jpg",
+        bio: "🎮 DIRECT NAUGHTY DOG CONNECTION. Raf is currently Art Director at Naughty Dog, having joined in late 2023 after over a decade at Sony Santa Monica where he led art direction on the award-winning God of War franchise (2018) and God of War Ragnarök. Before Sony he was Senior Character Artist at BioWare on Mass Effect and Dragon Age. He's contributed to 70+ projects across 15+ companies and has won DICE Best Art Direction and Game of the Year awards." },
+      roadmap: "This is unmissable. Raf is now the Art Director at your target studio — studying his anatomy method is the closest thing to a direct line into Naughty Dog's aesthetic standards. Master both the male and female extensions: real character art portfolios show range, and studios specifically check whether you can sculpt both with equal confidence."
+    },
+    "facial-sculpting": {
+      stage: "s15", stageLabel: "STAGE 1.5 · ANATOMY IN ZBRUSH",
+      title: "Character Facial Sculpting",
+      author: "CGMA",
+      description: "A focused course on the head — planes of the face, facial anatomy, and how to translate expressions into ZBrush. You'll learn the underlying skull and muscle structure that makes a face read as a real person, not a generic mask. This is the technical foundation for every likeness sculpt you'll ever do.",
+      tutor: { name: "CGMA Faculty", role: "CG Master Academy · Industry Instructors", initials: "CG",
+        bio: "CGMA's Character Facial Sculpting course is taught by working industry character artists. CGMA is one of the most respected online schools for entertainment art, with alumni working at every major studio including Naughty Dog, Blizzard, Riot, ILM, and Wētā FX. Live Q&As, weekly assignments, and personalized feedback are core to the experience." },
+      roadmap: "Faces are the hardest and most-judged part of any character. Studios will spend more time looking at your character's face in three seconds than at the rest of the model combined. The facial planes you learn here are the prerequisite for Stage 4's likeness sculpting — try Frank Tzeng's course before mastering this and you'll spend twice as long."
+    },
+
+    /* ===== STAGE 2 — CHARACTER PIPELINE ===== */
+    "character-bust": {
+      stage: "s2", stageLabel: "STAGE 02 · CHARACTER PIPELINE",
+      title: "Creating a Character Bust: From Ideation to Final Render",
+      author: "Colleen Larson · Gnomon Workshop",
+      description: "A 3-hour, 11-chapter holistic walkthrough of an actual Naughty Dog game-art pipeline: ideation, reference gathering, head & likeness sculpting in ZBrush, clothing in Marvelous Designer, hair in XGen, texturing in Substance Painter, and final render in Marmoset Toolbag. Plus Colleen's philosophies on staying creative through a long project.",
+      tutor: { name: "Colleen Larson", role: "Senior Character Artist · Naughty Dog", initials: "CL",
+        photo: "https://d2tmthzm7jp200.cloudfront.net/instructors/avatars/000/000/362/square/colleenlarson180.jpg",
+        bio: "🎮 DIRECT NAUGHTY DOG CONNECTION. Colleen is a Senior Character Artist at Naughty Dog, working on the studio's flagship titles. Her course explicitly states the workflow she teaches is a modified version of the pipeline she follows every day at the studio — making this one of the most direct windows into Naughty Dog's actual character-art process publicly available." },
+      roadmap: "This is the single most strategically valuable course in your entire roadmap before Stage 4. Colleen is at Naughty Dog right now, teaching the exact pipeline she uses there. Treat this course like a job-shadow and follow her method precisely on your first portfolio bust — anything you build using her workflow will speak the same visual language as a real Naughty Dog character."
+    },
+    "ackeem-character": {
+      stage: "s2", stageLabel: "STAGE 02 · CHARACTER PIPELINE",
+      title: "Character Creation for Games",
+      author: "Ackeem Durrant · Vertex School",
+      description: "47h 18m of training broken into 'sprints' — production-style modules. Covers reference gathering, blockout, face plane sculpting, primary/secondary/tertiary detail, hand-sculpted pores, custom brushes, retopology, UVs, Substance Painter texturing for clothing, XGen hair grooming, eye shaders, and dynamic posing. The most complete single AAA character pipeline course on the market.",
+      tutor: { name: "Ackeem Durrant", role: "3D Character Artist · Bulkhead Interactive (ex-Microsoft Rare)", initials: "AD",
+        photo: "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/themes/1626659/settings_images/OgHUCwWgRqasnxSuRm0L_file.jpg",
+        bio: "Originally from Jamaica, Ackeem has worked with studios around the world freelancing before joining Microsoft Rare and then Bulkhead Interactive in the UK. Self-taught in 3D from age 16, he previously worked in TV, advertising, and teaching before transitioning to games. He's known for his disciplined, production-aware approach to teaching the pipeline." },
+      roadmap: "This 47-hour course IS Stage 2. It's not supplementary reading — it's the curriculum. The 'sprint' structure means you can pace yourself in a real production rhythm rather than trying to binge it. The single most important thing: when you finish, immediately do one more character entirely on your own using Ackeem's method but with your own concept. That second character is what goes on ArtStation."
+    },
+
+    /* ===== STAGE 3 — TEXTURE, CLOTH & HAIR ===== */
+    "substance-texturing": {
+      stage: "s3", stageLabel: "STAGE 03 · TEXTURE · CLOTH · HAIR",
+      title: "Character Texturing for Games in Substance",
+      author: "Saurabh Jethani · CGMA",
+      description: "A 6-week course taking you from zero to industry-standard Substance Painter. PBR workflow fundamentals, material creation from scratch, hand-painted skin texturing, fabric, metal, and the art of layering procedural and hand-painted detail without losing physical believability.",
+      tutor: { name: "Saurabh Jethani", role: "Character Artist for Games · Industry Educator", initials: "SJ",
+        bio: "Saurabh is a Bhilai-born character artist for games, trained at Think Tank Training Centre. His characters consistently get featured on 80.lv and ArtStation for their stylized-realistic blend, drawing direct influence from Naughty Dog's approach with Nathan Drake. Former students consistently describe his teaching as clear, well-sourced, and packed with industry references." },
+      roadmap: "Texturing is what separates a 'sculpt with materials' from a 'character that looks alive.' Saurabh teaches the PBR workflow that's standard at every AAA studio, including Naughty Dog. Critically: he openly studies and teaches the Naughty Dog approach to stylized-realism, so his examples already point you in the direction your portfolio needs to go."
+    },
+    "intro-marvelous": {
+      stage: "s3", stageLabel: "STAGE 03 · TEXTURE · CLOTH · HAIR",
+      title: "Introduction to Marvelous Designer",
+      author: "Erika Lochs · Gnomon Workshop",
+      description: "A complete introduction to Marvelous Designer for artists who've never touched the software. Covers the 3D and 2D windows, navigation, avatar setup, and walks through creating a denim jacket from a provided pattern. Includes a bonus medieval-tent project for environment artists.",
+      tutor: { name: "Erika Lochs", role: "Lead Character Artist · Electric Square (Diablo 4, Far Cry 6)", initials: "EL",
+        photo: "https://d2tmthzm7jp200.cloudfront.net/instructors/avatars/000/000/337/square/Erika-Lochs.jpg",
+        bio: "Erika is a Lead Character Artist at Electric Square specializing in clothing for game characters. Her credits include Diablo 4, Far Cry 6, and Riders Republic. Critically, she sews her own clothes outside of work — that real-world tailoring knowledge is exactly what makes her digital cloth read as authentic, and it's the same insight that separates 'fabric that looks like fabric' from 'fabric you've seen on real people.'" },
+      roadmap: "Marvelous Designer is now the industry standard for character clothing — Naughty Dog uses it, and your roadmap-required course (Ackeem's) explicitly teaches it as part of the pipeline. Start with Erika's intro to nail the basics, then progress to her Realistic Fabric course. Ignoring MD in 2026 is like ignoring ZBrush — possible, but career-limiting."
+    },
+    "realistic-fabric": {
+      stage: "s3", stageLabel: "STAGE 03 · TEXTURE · CLOTH · HAIR",
+      title: "Creating Realistic Fabric & Clothing for Games",
+      author: "Erika Lochs · Gnomon Workshop",
+      description: "A 3-hour deep dive into the theory of cloth, fibers, how they're made, how they interact, and how they degrade — then the full workflow for a realistic Viking tunic with a hood. Marvelous Designer → ZBrush detailing → Substance Painter texturing → Marmoset render. Includes Erika's fabric samples, MD presets, and project files.",
+      tutor: { name: "Erika Lochs", role: "Lead Character Artist · Electric Square (Diablo 4, Far Cry 6)", initials: "EL",
+        photo: "https://d2tmthzm7jp200.cloudfront.net/instructors/avatars/000/000/337/square/Erika-Lochs.jpg",
+        bio: "Erika is a Lead Character Artist at Electric Square specializing in clothing for game characters. Her credits include Diablo 4, Far Cry 6, and Riders Republic. Critically, she sews her own clothes outside of work — that real-world tailoring knowledge is exactly what makes her digital cloth read as authentic, and it's the same insight that separates 'fabric that looks like fabric' from 'fabric you've seen on real people.'" },
+      roadmap: "Once you can model cloth, you need to know how cloth actually behaves — which is what this course teaches. The Viking tunic project is also a perfect 'extra' portfolio piece by itself: it's a full clothing breakdown that demonstrates the storytelling-through-wear-and-damage skill that AAA studios specifically look for in character art."
+    },
+    "hair-creation": {
+      stage: "s3", stageLabel: "STAGE 03 · TEXTURE · CLOTH · HAIR",
+      title: "Character Hair Creation",
+      author: "Johan Lithvall · CGMA",
+      description: "An 8-week course built around techniques developed during the production of Horizon Zero Dawn. The complete real-time hair pipeline: planning, hair strand creation in XGen, baking hairs into hair-card textures, building the final hair asset, and bringing it into Unreal Engine for real-time rendering.",
+      tutor: { name: "Johan Lithvall", role: "Hair Specialist · Horizon Zero Dawn", initials: "JL",
+        bio: "Johan is a freelance hair specialist for the games and film industries, focused on real-time rendered hair. He worked on Horizon Zero Dawn at Guerrilla Games — one of the cleanest hair-tech showcases of the PS4 generation — and previously at Starbreeze Studios on The Walking Dead. His curriculum is the de-facto standard for AAA hair pipelines, with techniques developed under fire on shipping titles." },
+      roadmap: "Hair is the silent killer of character portfolios. A great sculpt with bad hair looks amateur instantly. Naughty Dog's character hair (Ellie, Abby, Joel) is some of the best in the industry — Johan's Horizon Zero Dawn-derived techniques are the exact pipeline used to achieve that level. Without this skill, your Stage 4 hero piece can't compete."
+    },
+
+    /* ===== STAGE 4 — LIKENESS & REALISM ===== */
+    "likeness-sculpting": {
+      stage: "s4", stageLabel: "STAGE 04 · LIKENESS & REALISM",
+      title: "Likeness Sculpting",
+      author: "Frank Tzeng · Gumroad",
+      description: "16 hours of realistic head sculpting, broken across 5 HD videos: introduction, base shape sculpting, secondary anatomy, wrinkles & pore detail, eyebrows/eyelashes/stubble/fibermesh hair. Includes the final ZBrush project file (the 'T-BAG' head), Frank's custom alpha brushes, fibermesh stubble/hair settings, and final ZBrush + KeyShot renders.",
+      tutor: { name: "Frank Tzeng", role: "Principal Character Artist · Naughty Dog", initials: "FT",
+        bio: "🎮 DIRECT NAUGHTY DOG CONNECTION. Frank is a Principal Character Artist at Naughty Dog, originally from Taiwan. His credits include Uncharted 4: A Thief's End, The Last of Us Remastered, Killzone: Shadow Fall, and Puppeteer. He's renowned for likeness work so accurate that his Robert Downey Jr. sculpt was, when rendered, indistinguishable from a photograph. He worked under Raf Grassetti on Killzone." },
+      roadmap: "If you only buy ONE paid course in the entire roadmap, it's this one. Frank is currently a Principal Character Artist at Naughty Dog. His exact workflow — every brush, every detail pass — is the closest thing to a leaked internal Naughty Dog tutorial that exists. Treat his 16 hours like sacred text. Do the course. Then do another likeness on your own using only what you learned."
+    },
+    "fan-art-character": {
+      stage: "s4", stageLabel: "STAGE 04 · LIKENESS & REALISM",
+      title: "Creating Realistic Fan Art Character",
+      author: "Frank Tzeng · Gumroad",
+      description: "19+ hours of full character creation from a sphere — sculpting, polypainting, and final KeyShot rendering. The natural follow-up to Likeness Sculpting, taking you from a bust to a complete realistic fan-art character with personal artistic direction.",
+      tutor: { name: "Frank Tzeng", role: "Principal Character Artist · Naughty Dog", initials: "FT",
+        bio: "🎮 DIRECT NAUGHTY DOG CONNECTION. Frank is a Principal Character Artist at Naughty Dog, originally from Taiwan. His credits include Uncharted 4: A Thief's End, The Last of Us Remastered, Killzone: Shadow Fall, and Puppeteer. He's renowned for likeness work so accurate that his Robert Downey Jr. sculpt was, when rendered, indistinguishable from a photograph. He worked under Raf Grassetti on Killzone." },
+      roadmap: "After Likeness Sculpting gives you the head, this course gives you everything below the neck — at the same quality bar. Combined, these two Frank Tzeng courses ARE Stage 4. The fan-art angle is also strategically perfect: a Naughty Dog fan-art piece (Joel, Ellie, Abby) sculpted in Frank's exact workflow goes straight to the top of your portfolio and signals studio-fit at first glance."
+    },
+    "kris-costa": {
+      stage: "s4", stageLabel: "STAGE 04 · LIKENESS & REALISM",
+      title: "YouTube Channel — Ongoing (FREE)",
+      author: "Kris Costa",
+      description: "Kris's free YouTube content is a continuous masterclass in hyperreal facial sculpture, 3D character likenesses, and observational realism. He's known for his 'Realism Idealized: Learning How to Observe' philosophy — teaching you to see anatomy and form, not just sculpt techniques.",
+      tutor: { name: "Kris Costa", role: "Lead Creature Modeler · ILM (former)", initials: "KC",
+        bio: "Kris (Krishnamurti 'Antropus' Costa) is one of the most awarded hyperreal sculptors in the industry. Former Lead Creature Modeler at Industrial Light & Magic, with film credits on The Avengers, Transformers, Pacific Rim, Pan's Labyrinth, Rango, and Barnyard. He's a featured Pixologic ZBrush Summit speaker and runs intensive paid master classes that consistently sell out — but his free YouTube output alone could carry an entire stage of your roadmap." },
+      roadmap: "Treat Kris's channel like a master running in the background of your entire Stage 4. While Frank Tzeng gives you the technical workflow, Kris gives you the artistic eye — the ability to see why a sculpt feels alive or dead. Watch him weekly. The combination of Frank's technique + Kris's observation is what gets your work to the level a Naughty Dog senior would actually compliment."
+    },
+    "skin-detailing": {
+      stage: "s4", stageLabel: "STAGE 04 · LIKENESS & REALISM",
+      title: "Skin Detailing & Scanned Textures",
+      author: "Ian Spriggs / Texturing.xyz",
+      description: "A workflow assembled from Ian Spriggs's portrait techniques and Texturing.xyz's industry-standard scanned skin resources. Hyper-realistic pore detailing, displacement application, scanned texture integration, and the secret-sauce details (eye moisture, peach fuzz, color variation) that push a likeness past the uncanny valley.",
+      tutor: { name: "Ian Spriggs", role: "Hyperreal Digital Portrait Artist · ex-ILM, Mr X, Image Engine", initials: "IS",
+        photo: "https://ianspriggs.com/wp-content/uploads/2020/05/SelfPortrait_ianspriggs-SQUARE-1.jpg",
+        bio: "Ian is a pioneer of digital humans, with film credits on The Mandalorian (Chapter 1), Bloodshot, Mulan, Spider-Man: Far From Home, and John Wick 3. He's worked at ILM, Oats Studios (with Neill Blomkamp), Image Engine, Mr X, and Unity Labs. His personal portrait work — done without 3D scans, only manual sculpting — has been exhibited in galleries and is widely considered some of the most photoreal CGI ever made." },
+      roadmap: "This is the final 5% that makes the difference between 'good portfolio character' and 'I would hire this person.' Skin micro-detail is what every senior character artist looks for first when reviewing a junior reel. Combining Ian's observation-led approach with the Texturing.xyz scan resources is the modern hyperreal pipeline — and it's exactly what you need on your hero piece before you submit applications in Stage 5."
+    }
+  };
+
+  // ─── DOM references ───
+  const overlay     = document.getElementById('courseModal');
+  const inner       = document.getElementById('modalInner');
+  const closeBtn    = document.getElementById('modalClose');
+  const elTag       = document.getElementById('modalStageTag');
+  const elTitle     = document.getElementById('modalTitle');
+  const elAuthor    = document.getElementById('modalAuthor');
+  const elDesc      = document.getElementById('modalDescription');
+  const elInitials  = document.getElementById('modalAvatarInitials');
+  const elAvatarImg = document.getElementById('modalAvatarImg');
+  const elTutorName = document.getElementById('modalTutorName');
+  const elTutorRole = document.getElementById('modalTutorRole');
+  const elTutorBio  = document.getElementById('modalTutorBio');
+  const elRoadmap   = document.getElementById('modalRoadmap');
+
+  function openCourse(courseId) {
+    const c = COURSES[courseId];
+    if (!c) return;
+
+    inner.setAttribute('data-stage', c.stage);
+    elTag.textContent       = c.stageLabel;
+    elTitle.textContent     = c.title;
+    elAuthor.textContent    = c.author;
+    elDesc.textContent      = c.description;
+    elInitials.textContent  = c.tutor.initials;
+
+    // Photo handling: set src if available, fall back to initials on error
+    elAvatarImg.classList.remove('failed');
+    if (c.tutor.photo) {
+      elAvatarImg.src = c.tutor.photo;
+      elAvatarImg.alt = c.tutor.name;
+      elAvatarImg.onerror = () => { elAvatarImg.classList.add('failed'); };
+    } else {
+      elAvatarImg.removeAttribute('src');
+      elAvatarImg.alt = '';
+    }
+
+    elTutorName.textContent = c.tutor.name;
+    elTutorRole.textContent = c.tutor.role;
+    elTutorBio.textContent  = c.tutor.bio;
+    elRoadmap.textContent   = c.roadmap;
+
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    closeBtn.focus();
+  }
+
+  function closeModal() {
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+  }
+
+  // ─── Wire up clicks on every tagged course-item ───
+  document.querySelectorAll('.course-item[data-course]').forEach(el => {
+    el.addEventListener('click', () => openCourse(el.getAttribute('data-course')));
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openCourse(el.getAttribute('data-course'));
+      }
+    });
+  });
+
+  // ─── Close interactions ───
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+  });
+
+  // ════════════════════════════════════════════════════════════════
+  // ░░ CYBERPUNK SCROLL EFFECTS ░░
+  // ════════════════════════════════════════════════════════════════
+  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ─── Scroll progress indicator ───
+  const progressBar = document.getElementById('scrollProgress');
+  function updateProgress() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  }
+  if (progressBar) {
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => { updateProgress(); ticking = false; });
+        ticking = true;
+      }
+    }, { passive: true });
+    updateProgress();
+  }
+
+  // ─── IntersectionObserver: reveal stages as they scroll into view ───
+  if (!prefersReduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          // Once revealed, stop observing — don't replay on scroll-back
+          io.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,        // fire when 12% of the section is visible
+      rootMargin: '0px 0px -8% 0px'
+    });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    // Fallback: just show everything immediately
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+  }
+
+  // ─── Generate floating background particles ───
+  const particles = document.getElementById('cpParticles');
+  if (particles && !prefersReduce) {
+    const COUNT = 28;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < COUNT; i++) {
+      const s = document.createElement('span');
+      s.style.left = Math.random() * 100 + '%';
+      s.style.animationDelay = (Math.random() * 18) + 's';
+      s.style.animationDuration = (12 + Math.random() * 14) + 's';
+      frag.appendChild(s);
+    }
+    particles.appendChild(frag);
+  }
+})();
+</script>
 
 </body>
 </html>
